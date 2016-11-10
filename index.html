@@ -1,0 +1,41 @@
+<!Doctype HTML>
+
+<html>
+
+	<head>
+	<title>Lab 6</title>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<?php include 'request.php';?>
+	</head>
+
+	<body> <button id='butt'>Search</button> </body>
+
+
+
+	<script>
+		$(document).ready(function(){
+			$('#butt').on('click', hRequest);	
+		});
+	
+		function hRequest(){
+			var httpRequest = new XMLHttpRequest();
+			var url='request.php?q=definition';
+			httpRequest.onreadystatechange=hResponse;
+			httpRequest.open('GET',url);
+			httpRequest.send();
+		}
+		
+		function hResponse(){
+			if (this.readyState === XMLHttpRequest.DONE) {
+	 			if (this.status === 200) {
+	 				var response = this.responseText;
+	 				alert(response);
+		 		} 
+		 		else {
+		 			alert('There was a problem with the request.');	 
+		 		}
+			}
+		}
+	</script>
+</html>
