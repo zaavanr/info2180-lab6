@@ -8,29 +8,71 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<?php include 'request.php';?>
 	</head>
+	
+	<style>
+	
+		h1{
+			color:blue;
+			font-family: "courier", monospace, sans-serif;
+			text-align: center;
+		}
+		
+		form{
+			padding-left:150px;
+		}
+		div{
+			background-color:red;
+			margin:auto;
+			border:1px solid black;
+			width:40%;
+			padding-bottom:50px;
+		}
+		
+		#result{
+			border:none;
+		}
+	</style>
+	
+	<body>
+		
+		<div>
+			<h1>Word Search</h1>
+			<form>
+					<input id="wLookUp" type="text" name="q"/>
+					<button id='butt'>Search</button>
+					<div id='result'></div>
 
-	<body> <button id='butt'>Search</button> </body>
-
-
+			</form> 
+		</div>
+	
+	</body>
 
 	<script>
 		$(document).ready(function(){
-			$('#butt').on('click', hRequest);	
+			$('#butt').on('click',hRequest);
+
 		});
 	
-		function hRequest(){
-			var httpRequest = new XMLHttpRequest();
-			var url='request.php?q=definition';
-			httpRequest.onreadystatechange=hResponse;
-			httpRequest.open('GET',url);
-			httpRequest.send();
+		function hRequest(wrd){
+			if ($('#wLookUp').val()==''){
+				alert ('Please Enter a word');
+			}
+			else{
+				wrd.preventDefault();
+				var httpRequest = new XMLHttpRequest();
+				var url='request.php?q='+$('#wLookUp').val();
+				httpRequest.onreadystatechange=hResponse;
+				httpRequest.open('GET',url);
+				httpRequest.send();
+			}
 		}
 		
 		function hResponse(){
 			if (this.readyState === XMLHttpRequest.DONE) {
 	 			if (this.status === 200) {
 	 				var response = this.responseText;
-	 				alert(response);
+	 				$('#wLookUp').val('');
+	 				$('#result').html(response);
 		 		} 
 		 		else {
 		 			alert('There was a problem with the request.');	 
@@ -38,4 +80,4 @@
 			}
 		}
 	</script>
-</html>
+</html>	
