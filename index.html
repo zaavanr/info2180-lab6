@@ -40,6 +40,7 @@
 			<form>
 					<input id="wLookUp" type="text" name="q"/>
 					<button id='butt'>Search</button>
+					<br><button id="aSearch">Get All Definitions</button>
 					<div id='result'></div>
 
 			</form> 
@@ -50,6 +51,7 @@
 	<script>
 		$(document).ready(function(){
 			$('#butt').on('click',hRequest);
+			$('#aSearch').on('click',aRequest);
 
 		});
 	
@@ -78,6 +80,20 @@
 		 			alert('There was a problem with the request.');	 
 		 		}
 			}
+		}
+		
+		function aRequest(wrd){
+			wrd.preventDefault();
+			$.ajax('request.php?q=&all=true',{
+				method:'GET',dataType: 'xml'}).done(function(response){
+				var findW =$(response).find('word');
+				$('#result').append("<ol></ol>");
+				$(findW).each(function(){
+					$('#result ol').append('<li>'+ '<strong>'+$(this).find('sr').text()+'</strong>' +'<br>'+$(this).find('defn').text()+'</li>');
+				});
+			}).fail(function(){
+				alert('There was a problem with the request.');
+			});
 		}
 	</script>
 </html>	
